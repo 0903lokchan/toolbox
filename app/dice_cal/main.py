@@ -1,4 +1,4 @@
-def simulation(dice, side, target_sum='all'):
+def simulate(dice, side, target_sum='all'):
     case_probability = 1 / (side**dice)
     list_case = []
     target_case = []
@@ -20,13 +20,14 @@ def simulation(dice, side, target_sum='all'):
 
     if type(target_sum) is int:
         possibility = case_probability * list_case.count(int(target_sum))
-        return print(f'{dice} {side}-sided dice, possibility to obtain {target_sum}: {possibility*100}%')
+        result = [{'result': target_sum, 'possibility': possibility}]
+
     elif target_sum == 'all':
         min_sum = dice
         max_sum = side*dice
-        result = {}
+        result = []
 
         for i in list(range(min_sum, max_sum+1)):
             p = list_case.count(i)*case_probability
-            result[i] = p
-        return result
+            result.append({'result': i, 'possibility': p})
+    return result

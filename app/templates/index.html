@@ -1,14 +1,7 @@
-<html>
-    <head>
-        {% if title %}
-        <title>{{ title }}</title>
-        {% else %}
-        <title>Lok's Toolbox</title>
-        {% endif %}
-    </head>
-    <body>
-        <a href="{{ url_for('dice_cal.main') }}">
-            Dice result calculator
-        </a>
-    </body>
-</html>
+{% extends 'base.html' %}
+
+{% block app_content %}
+    <div class="container">
+        <a href="{{ url_for('dice_cal.main') }}">Dice Calculator</a>
+    </div>
+{% endblock app_content %}

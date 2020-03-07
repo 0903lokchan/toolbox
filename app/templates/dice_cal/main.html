@@ -1,5 +1,7 @@
-<html>
-    <body>
-        <h1>Dice Calculator</h1>
-    </body>
-</html>
+{% extends 'base.html' %}
+
+{% block app_content %}
+    <div class="container">
+        <a href="{{ url_for('main.index') }}">Dice Calculator</a>
+    </div>
+{% endblock app_content %}

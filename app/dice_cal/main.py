@@ -1,4 +1,6 @@
 def simulate(dice, side, target_sum='all'):
+    target_sum = 'all'
+
     case_probability = 1 / (side**dice)
     list_case = []
     target_case = []
@@ -30,4 +32,8 @@ def simulate(dice, side, target_sum='all'):
         for i in list(range(min_sum, max_sum+1)):
             p = list_case.count(i)*case_probability
             result.append({'result': i, 'possibility': p})
-    return result
+
+    output = ""
+    for item in result:
+        output += f"Result: {item['result']}    Possibility: {item['possibility']*100}%<br>"
+    return output

@@ -1,7 +1,23 @@
 {% extends 'base.html' %}
 
 {% block app_content %}
-    <div class="container">
-        <a href="{{ url_for('dice_cal.main') }}">Dice Calculator</a>
+<div class="container-fluid">
+    <div class="row">
+        <h1>Lok Chan's Toolbox</h1>
+    </div>    
+    <div class="row">
+      <p>Welcome to my page! I am Lok Chan, a Linguistics and Data Science student currently in New Zealand.
+        I started self-studying programming in 2019 Winter, and I work mainly with Python.
+
+        This page hosts little things I built so to practice web application development.
+      </p>
     </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <a href="{{ url_for('dice_cal.main') }}">Dice Calculator</a>
+      </div>
+      <div class="col-sm-6">
+      </div>
+    </div>
+  </div>
 {% endblock app_content %}

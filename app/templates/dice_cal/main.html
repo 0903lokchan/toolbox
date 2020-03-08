@@ -31,12 +31,25 @@
 {% endblock scripts %}
 
 {% block app_content %}
-    <div class="container">
-        <h1>Dice Probability Calculator</h1>
-        {% if form %}
-        {{ wtf.quick_form(form) }}
-        <br>
-        {% endif %}
-        <span class="border"><p id="result">try it</p></span>
+    <div class="container-fluid">
+        <div class="row">
+            <h1>Dice Probability Calculator</h1>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                {% if form %}
+                {{ wtf.quick_form(form) }}
+                {% endif %}
+                <br><br>
+                <span class="border"><p id="result">Result displays here</p></span>
+            </div>
+            <div class="col-sm-8">
+                <p>
+                    This Calculator accepts input with (number of dice) * (number of sides) less than 
+                    10000 to do simulation of all possilble outcomes of input dice set. Then probability 
+                    of all possible outcomes are then displayed in the result field, rounded to 6 decimal points.
+                </p>
+            </div>
+        </div>
     </div>
 {% endblock app_content %}

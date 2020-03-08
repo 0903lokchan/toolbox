@@ -14,6 +14,6 @@ def main():
 def cal_sim():
     form = ParameterForm()
     if form.validate_on_submit():
-        return jsonify(simulate(form.dice.data, form.side.data, form.target_sum.data))
+        return jsonify(simulate(form.dice.data, form.side.data))
     return jsonify(form.errors)
 

@@ -1,7 +1,9 @@
-def simulate(dice, side, target_sum='all'):
-    target_sum = 'all'
+from decimal import Decimal
 
-    case_probability = 1 / (side**dice)
+def simulate(dice, side):
+
+    case_count = side**dice
+    case_probability = Decimal('1')/case_count
     list_case = []
     target_case = []
     temp_a = [[]]
@@ -20,17 +22,12 @@ def simulate(dice, side, target_sum='all'):
     for i, case in enumerate(list_case):
         list_case[i] = sum(case)
 
-    if type(target_sum) is int:
-        possibility = case_probability * list_case.count(int(target_sum))
-        result = [{'result': target_sum, 'possibility': possibility}]
-
-    elif target_sum == 'all':
         min_sum = dice
         max_sum = side*dice
         result = []
 
         for i in list(range(min_sum, max_sum+1)):
-            p = list_case.count(i)*case_probability
+            p = Decimal(list_case.count(i) * case_probability)
             result.append({'result': i, 'possibility': p})
 
     output = ""

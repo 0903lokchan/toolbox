@@ -19,7 +19,15 @@ def cal_sim():
     dice = int(req["dice"])
     side = int(req["side"])
     result = simulate(dice, side)
+    payload = ''
 
-    res = make_response(jsonify({"text": result}), 200)
-    return res
+    for item in result:
+        row = f'''<tr>
+                    <th scope:'row'>{item["outcome"]}</th>
+                    <td>{item["probability"]}%</td>
+                </tr>'''
+        payload += row
+
+    response = make_response(jsonify({"text": payload}), 200)
+    return response
 

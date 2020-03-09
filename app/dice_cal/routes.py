@@ -1,4 +1,4 @@
-from flask import render_template, request, render_template, url_for, jsonify
+from flask import render_template, request, render_template, url_for, jsonify, make_response
 from flask import current_app
 
 from app.dice_cal import bp
@@ -12,8 +12,22 @@ def main():
 
 @bp.route('/dice_cal/cal_sim', methods=['POST'])
 def cal_sim():
-    form = ParameterForm()
-    if form.validate_on_submit():
-        return jsonify(simulate(form.dice.data, form.side.data))
-    return jsonify(form.errors)
+    req = request.get_json()
+
+    print(req)
+
+    dice = int(req["dice"])
+    side = int(req["side"])
+    result = simulate(dice, side)
+    payload = ''
+
+    for item in result:
+        row = f'''<tr>
+                    <th scope:'row'>{item["outcome"]}</th>
+                    <td>{item["probability"]}%</td>
+                </tr>'''
+        payload += row
+
+    response = make_response(jsonify({"text": payload}), 200)
+    return response
 

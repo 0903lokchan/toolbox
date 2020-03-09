@@ -31,9 +31,6 @@ def simulate(dice: int, side: int):
 
         for i in list(range(min_sum, max_sum+1)):
             p = round(list_case.count(i) * case_probability * 100, 6)
-            result.append({'result': i, 'possibility': p})
+            result.append({'outcome': i, 'probability': p})
 
-    output = ""
-    for item in result:
-        output += f"Result: {item['result']}    Possibility: {item['possibility']}%<br>"
-    return output
+    return result

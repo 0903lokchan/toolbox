@@ -2,30 +2,41 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block scripts %}
-    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
     <script>
-        $(document).ready(function(){
-            $('form').submit(function cal_sim(e) {
-                                var url = "{{ url_for('dice_cal.cal_sim') }}";
-                                $.ajax({
-                                    type: "POST",
-                                    url: url,
-                                    data: $('form').serialize(),
-                                    success: function (data) {
-                                        $(result).html(data);
-                                        console.log(data);
-                                    }
-                                });
-                                e.preventDefault();
-                            });
-            $.ajaxSetup({
-                beforeSend: function(xhr, settings) {
-                    if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", "{{ form.csrf_token._value() }}")
-                    }
-                }
+
+        function cal_sim() {
+            var dice = document.getElementById("dice");
+            var side = document.getElementById("side");
+            var result = document.getElementById("result");
+
+            var entry = {
+                        dice: dice.value,
+                        side: side.value
+                        };
+
+            fetch(`${window.origin}/dice_cal/cal_sim`, {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify(entry),
+            cache: "no-cache",
+            headers: new Headers({
+                "content-type": "application/json"
             })
-        });
+        })
+            .then(function (response) {
+                if (response.status !== 200) {
+                    console.log(`Looks like there was a problem. Status code: ${response.status}`);
+                    return;
+                }
+                response.json().then(function (data) {
+                    console.log(data);
+                    result.innerHTML = data['text'];
+                });
+            })
+            .catch(function (error) {
+                console.log("Fetch error: " + error);
+            });
+        }
 
     </script>
 {% endblock scripts %}
@@ -37,11 +48,17 @@
         </div>
         <div class="row">
             <div class="col-sm-4">
-                {% if form %}
-                {{ wtf.quick_form(form) }}
-                {% endif %}
-                <br><br>
-                <span class="border"><p id="result">Result displays here</p></span>
+                <div class="form-group">
+                    <label>Number of dice</label>
+                    <input type="number" class="form-control" id="dice">
+                </div>
+
+                <div class="form-group">
+                    <label>Number of sides</label>
+                    <input type="number" class="form-control" id="side">
+                </div>
+                <br>
+                <button class="btn btn-primary" id="calculate" onclick="cal_sim();">Calculate</button>
             </div>
             <div class="col-sm-8">
                 <p>
@@ -50,6 +67,9 @@
                     of all possible outcomes are then displayed in the result field, rounded to 6 decimal points.
                 </p>
             </div>
+        </div>
+        <div class="row">
+            <span class="border"><p id="result">Result displays here</p></span>
         </div>
     </div>
 {% endblock app_content %}

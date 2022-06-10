@@ -14,20 +14,23 @@ def main():
 def cal_sim():
     req = request.get_json()
 
-    print(req)
-
-    dice = int(req["dice"])
-    side = int(req["side"])
-    result = simulate(dice, side)
+    dice_n = int(req["dice"])
+    side_n = int(req["side"])
+    result = simulate(dice_n, side_n)
     payload = ''
 
-    for item in result:
-        row = f'''<tr>
-                    <th scope:'row'>{item["outcome"]}</th>
-                    <td>{item["probability"]}%</td>
-                </tr>'''
-        payload += row
+    if type(result) is dict:
+        result_html_list = [f'''<tr>
+                        <th scope:'row'>{outcome}</th>
+                        <td>{probability}%</td>
+                    </tr>''' for outcome, probability in result.items()]
+        payload = ''.join(result_html_list)
+    elif type(result) is str:
+        payload = result
+    else:
+        # TODO send error response if the app function returns an unexpected result
+        return make_response()
 
-    response = make_response(jsonify({"text": payload}), 200)
-    return response
+    return make_response(jsonify({"text": payload}), 200)
+    
 

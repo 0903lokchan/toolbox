@@ -3,8 +3,9 @@ from decimal import Decimal
 def simulate(dice: int, side: int):
 
     case_count = side**dice
-    if case_count > 10000:
-        return "Sorry, the server-side function only support simulation with case amount less than 10000. Please use other values."
+    if case_count > 1000:
+        return "Sorry, the simulation is run on server-side so I have limited the maximum number of results to 1000 in \
+    order to prevent overloading. Please use a smaller combination of input."
 
     case_probability = Decimal('1')/case_count
     list_case = []

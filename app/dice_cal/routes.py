@@ -13,24 +13,23 @@ def main():
 @bp.route('/dice_cal/cal_sim', methods=['POST'])
 def cal_sim():
     req = request.get_json()
+    if req is not None:
+        dice_n = int(req["dice"])
+        side_n = int(req["side"])
+        result = simulate(dice_n, side_n)
+        payload = ''
 
-    dice_n = int(req["dice"])
-    side_n = int(req["side"])
-    result = simulate(dice_n, side_n)
-    payload = ''
+        if type(result) is dict:
+            result_html_list = [f'''<tr>
+                            <th scope:'row'>{outcome}</th>
+                            <td>{probability}%</td>
+                        </tr>''' for outcome, probability in result.items()]
+            payload = ''.join(result_html_list)
+        elif type(result) is str:
+            payload = result
 
-    if type(result) is dict:
-        result_html_list = [f'''<tr>
-                        <th scope:'row'>{outcome}</th>
-                        <td>{probability}%</td>
-                    </tr>''' for outcome, probability in result.items()]
-        payload = ''.join(result_html_list)
-    elif type(result) is str:
-        payload = result
+        return make_response(jsonify({"text": payload}), 200)
     else:
-        # TODO send error response if the app function returns an unexpected result
-        return make_response()
-
-    return make_response(jsonify({"text": payload}), 200)
+        # catch all error response
+        return make_response('The server has encountered an unexpected error.', 500)
     
-

@@ -1,8 +1,23 @@
 from decimal import Decimal
 
 # deault precision of decimal package is 28, which is more than enough for our target precision for output (6 d.p.)
+class TooManyCombinationsError(ValueError):
+    """Exception raised for when the total number of possible combination of dice outcomes exceeded limit.
 
-def simulate(dice_n: int, side_n: int) -> dict[int,Decimal]|str:
+    Attributes:
+        combination_n (int): The number of possible combinations from user input
+        message (str): Error message
+    """
+    
+    def __init__(self, combination_n: int, message: str="Number of possible cmobinations exceeded 10000", *args: object) -> None:
+        self.combination_n = combination_n
+        self.message = message
+        super().__init__(self.message, *args)
+        
+    def __str__(self) -> str:
+        return f"{self.combination_n} -> {self.message}"
+
+def simulate(dice_n: int, side_n: int) -> dict[int,Decimal]:
     """Calculates the possibilities of every outcome of a given dice set by simulation. It is assumed that all dice are 
     prefectly fair and have same faces. Return a dictionary of outcomes and possibilitie or an error string when the 
     total number of possible instances is over 1000.
@@ -17,9 +32,8 @@ def simulate(dice_n: int, side_n: int) -> dict[int,Decimal]|str:
     """
 
     case_count = side_n**dice_n
-    if case_count > 1000:
-        return "Sorry, the simulation is run on server-side so I have limited the maximum number of results to 1000 in \
-    order to prevent overloading. Please use a smaller combination of input."
+    if case_count > 10000:
+        raise TooManyCombinationsError(case_count)
 
     min_face = 1
     max_face = side_n

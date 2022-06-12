@@ -62,9 +62,13 @@
             </div>
             <div class="col-sm-8">
                 <p>
-                    This Calculator accepts input with (number of dice) * (number of sides) less than 
-                    10000 to do simulation of all possilble outcomes of input dice set. Then probability 
-                    of all possible outcomes are then displayed in the result field, rounded to 6 decimal points.
+                    Given the number of dice and the number of sides of the dice, the calculator simulates every possible
+                    outcome and calculate the possibilties of getting each possible sum of dice with the assumption that
+                    all the dice are fair. Results are displayed as percentages rounded to 6 decimal points.
+                    
+                    This uses a server-end function for simulation, so the input is throttled to 
+                    prevent heavy load. The calculator will reject if the number of possible combination of dice exceeds
+                    10000.
                 </p>
             </div>
         </div>

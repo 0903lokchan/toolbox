@@ -23,12 +23,12 @@ def cal_sim():
     try:
         #TODO API should not return html element string. change it to dict instead
         result = simulate(dice_n, side_n)
-        result_html_list = [f'''<tr>
-                        <th scope:'row'>{outcome}</th>
-                        <td>{probability}%</td>
-                    </tr>''' for outcome, probability in result.items()]
-        payload = ''.join(result_html_list)
-        return make_response(jsonify({"text": payload}), 200)
+        # result_html_list = [f'''<tr>
+        #                 <th scope:'row'>{outcome}</th>
+        #                 <td>{probability}%</td>
+        #             </tr>''' for outcome, probability in result.items()]
+        # payload = ''.join(result_html_list)
+        return make_response(jsonify({"result": result}), 200)
     
     except TooManyCombinationsError:
         return make_response('The number of possible combination exceeds 10000. Please try with smaller numbers.', 400)

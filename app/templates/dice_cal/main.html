@@ -24,13 +24,20 @@
             })
         })
             .then(function (response) {
+                //TODO catch 400
+                //TODO catch 500
                 if (response.status !== 200) {
                     console.log(`Looks like there was a problem. Status code: ${response.status}`);
                     return;
                 }
                 response.json().then(function (data) {
-                    console.log(data);
-                    result.innerHTML = data['text'];
+                    //construct table
+                    const result_HTML_list = Object.entries(data['result'])
+                        .map(([outcome, prob]) => {
+                            return `<tr><th scope:'row'>${outcome}</th><td>${prob}</td></tr>`
+                        })
+                    const tableHTML = result_HTML_list.join('')
+                    result.innerHTML = tableHTML;
                 });
             })
             .catch(function (error) {

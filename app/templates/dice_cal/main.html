@@ -24,10 +24,11 @@
             })
         })
             .then(function (response) {
-                //TODO catch 400
-                //TODO catch 500
                 if (response.status !== 200) {
                     console.log(`Looks like there was a problem. Status code: ${response.status}`);
+                    response.json().then(payload => {
+                        result.innerHTML = `Status code: ${response.status} ${payload["response_text"]}`;
+                    })
                     return;
                 }
                 response.json().then(function (data) {

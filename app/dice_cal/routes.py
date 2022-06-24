@@ -12,28 +12,21 @@ def main():
 
 @bp.route('/dice_cal/cal_sim', methods=['POST'])
 def cal_sim():
-    req = request.get_json()
-    
-    if req is None or req["dice"] is None or req["side"] is None:
-        return make_response("Invalid input", 400)
-        
-    dice_n = int(req["dice"])
-    side_n = int(req["side"])
-    
     try:
-        #TODO API should not return html element string. change it to dict instead
+        req = request.get_json()
+    
+        if req is None or req["dice"] == '' or req["side"] == '':
+            return make_response(jsonify({"response_text": 'Invalid input'}), 400)
+            
+        dice_n = int(req["dice"])
+        side_n = int(req["side"])
         result = simulate(dice_n, side_n)
-        # result_html_list = [f'''<tr>
-        #                 <th scope:'row'>{outcome}</th>
-        #                 <td>{probability}%</td>
-        #             </tr>''' for outcome, probability in result.items()]
-        # payload = ''.join(result_html_list)
         return make_response(jsonify({"result": result}), 200)
     
     except TooManyCombinationsError:
-        return make_response('The number of possible combination exceeds 10000. Please try with smaller numbers.', 400)
+        return make_response(jsonify({"response_text": 'The number of possible combination exceeds 10000. Please try with smaller numbers.'}), 400)
     
     except:
         # catch all error response
-        return make_response('The server has encountered an unexpected error.', 500)
+        return make_response(jsonify({"response_text": 'The server has encountered an unexpected error.'}), 500)
     
